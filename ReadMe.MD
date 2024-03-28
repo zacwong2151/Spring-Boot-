@@ -1,11 +1,13 @@
 ## Definitions
 
+
 - API layer - e.g. when client clicks on a button, which sends an API call to service layer
 
 - Service layer - processes the API call
 
 - Data access layer - performs crud operations on the database through the API call from service layer
 
+![](images/spring_overview.png)
 
 - Maven - a build automation tool that helps you consolidate all dependencies in one place
 - Gradle - for android projects
@@ -41,11 +43,13 @@ use PUT when you know the URL of thing you will create, e.g. updating a specific
 1. go to spring initializr.com and download a spring mvc dependencies file
 2. go to intellij and open the file
 
+<!-- -->
 
 1. in postgresql, run code `CREATE DATABASE student`
 2. then run `GRANT ALL PRIVILEGES ON DATABASE "student" to postgres`
 3. when you run `\l`, you can now see student as a database which you can connect to using `\c student`
 
+<!-- -->
 
 1. to connect intellij to postgre database 
    - install DB Browser plugin (already did)
