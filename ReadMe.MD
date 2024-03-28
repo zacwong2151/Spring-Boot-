@@ -1,3 +1,17 @@
+## Steps to run code
+
+1. Run DemoApplication.java
+2. Open http://localhost:8080/api/v1/student on your web browser
+3. Use PostMan to test API calls
+    - To create a student: `POST http://localhost:8080/api/v1/student`
+      - with a request body containing the name, email, dob of a student in JSON format
+    - To delete a student: `DELETE http://localhost:8080/api/v1/student/{studentId}`
+      - where `studentId` is the student you want to delete
+    - To update the name and/or email of a student: `PUT http://localhost:8080/api/v1/student/{studentId}?name={newname}&email={newemail}`
+      - where `studentId` is the student you want to update
+      - where `newname (optional)` and `newemail (optional)` are the new values of that student
+
+
 ## Definitions
 
 
@@ -57,5 +71,5 @@ use PUT when you know the URL of thing you will create, e.g. updating a specific
    - add new connection (+ icon) -> postgresql, then under database field put in the name 'student' (test connection to check)
 
 2. to test if api calls work correctly
-   - open postman(website)
+   - open postman (website)
    - by calling the correct api url with the appropriate parameters/request body, the data in localhost as well as postgresql database should update accordingly

@@ -31,6 +31,18 @@ public class Student {
     private LocalDate dob;
     @Transient // means that age is not a column in our db: it is derived from dob
     private Integer age;
+    public Student() {
+
+    }
+    public Student(Long id,
+                   String name,
+                   String email,
+                   LocalDate dob) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.dob = dob;
+    }
     public Student(String name,
                    String email,
                    LocalDate dob) {
@@ -38,6 +50,7 @@ public class Student {
         this.email = email;
         this.dob = dob;
     }
+
     public Long getId() {
         return id;
     }
