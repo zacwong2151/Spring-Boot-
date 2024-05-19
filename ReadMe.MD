@@ -34,12 +34,59 @@
 
 - API endpoint: the server side that provides the requested resource
 
+## Spring Annotations
+
+- `@Component`
+  - Annotates a class. Tells Spring that this class is a bean, and Spring manages all beans. A bean has to be instantiated by Spring, and made available for dependency injection
+  - Usually an app uses this `@Component` annotation. If it doesn't it probably uses a combination of `@Service`, `@Repository`, and `@Controller`, which are beans with more specific roles
+
+
+- `@Service`
+  - Annotates a service-layer class. Handles business logic
+
+
+- `@Repository`
+  - Annotates a data-access class. Interacts directly with database
+
+
+- `@Controller`
+  - Annotates an API-layer class. Receives HTTP requests and returns reponses
+
+
+- `@Autowired`
+  - Can be annotated on a constructor, field, or a setter method. Tells Spring to wire up the dependency for you. Spring finds a bean of that data type, and injects it for you. If there are multiple, then have to use more specific annotations
+
+
+- `@Value`
+  - Annotates a string e.g. `@Value("${database.url}")`
+  - Spring will look for `database.url` from the property file and inject that value into the string 
+  - Promotes loose coupling by injecting values instead of hardcoding 
+  - Only works for a class with `@Component` annotation
+
+
+- `@Bean`
+  - Annotates a method. Whatever the method returns, make it a bean
+
+
+- `@RequestMapping`
+  - Annotates a controller class or method
+    Maps all HTTP requests to that URL
+  - Within that class, can map methods to more specific URLs based on `path`
+
+
+- `@RestController`
+  - A controller class that returns JSON response
+
+
+- `@SpringBootApplication`
+  - Initializes all beans, `@Configuration` files, etc upon launching the application. Is the gateway to running your app
+
 ## More definitions
 
 - *Spring Beans*
   - In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called beans. A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container.
 
-  - Inversion of Control (IoC) is a process in which an object defines its dependencies without creating them. This object delegates the job of constructing such dependencies toan IoC container.
+  - Inversion of Control (IoC) is a process in which an object defines its dependencies without creating them. This object delegates the job of constructing such dependencies to an IoC container.
 
 
 - difference between POST and PUT http requests

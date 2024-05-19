@@ -14,8 +14,9 @@ import java.util.List;
  */
 @Configuration
 public class StudentConfig {
-    @Bean // the combination of CommandLineRunner interface and @Bean annotation means that the function below is
-            // run automatically during startup
+    @Bean
+        /* the combination of CommandLineRunner interface and @Bean annotation means that the function below is
+        run automatically during startup */
     CommandLineRunner commandLineRunner(StudentRepo studentRepo) {
         return args -> {
             Student mariam = new Student(

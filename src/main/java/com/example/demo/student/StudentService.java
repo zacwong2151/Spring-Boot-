@@ -10,12 +10,15 @@ import java.util.Optional;
 @Service // indicates that this class is a service class, i.e. has to be instantiated automatically
 public class StudentService {
     private final StudentRepo studentRepo;
+
     public StudentService(StudentRepo studentRepo) {
         this.studentRepo = studentRepo;
     }
+
     public List<Student> getStudents() {
         return studentRepo.findAll();
     }
+
     public void addNewStudent(Student student) {
         Optional<Student> studentOptional = studentRepo.getStudentByEmail(student.getEmail());
         if (studentOptional.isPresent()) {
@@ -23,6 +26,7 @@ public class StudentService {
         }
         studentRepo.save(student);
     }
+
     public void deleteStudent(Long id) {
         boolean exists = studentRepo.existsById(id);
         if (!exists) {
@@ -30,10 +34,10 @@ public class StudentService {
         }
         studentRepo.deleteById(id);
     }
+
     @Transactional
     /*
-    based on what I know, use this annotation when you don't perform operations on StudentRepo
-    which affects the result
+    Makes this method a transaction, similar to transaction in SQL. Either fully commit or rollback
      */
     public void updateStudent(Long id, String name, String email) {
         // first find out if student exists
