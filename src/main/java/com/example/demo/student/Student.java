@@ -18,7 +18,7 @@ public class Student {
     @SequenceGenerator(
             name = "student_sequence",
             sequenceName = "student_sequence",
-            allocationSize = 1 // increments each sequence by 1
+            allocationSize = 1 // increments each sequence   by 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,

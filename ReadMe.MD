@@ -11,7 +11,6 @@
       - where `studentId` is the student you want to update
       - where `newname (optional)` and `newemail (optional)` are the new values of that student
 
-
 ## Definitions
 
 
@@ -23,16 +22,45 @@
 
 ![](images/spring_overview.png)
 
-- Maven - a build automation tool that helps you consolidate all dependencies in one place
 - Gradle - for android projects
+- Maven - a build automation tool that helps you consolidate all dependencies in one place
+  - dependencies are the technologies/software you work with in your project
+  - maven downloads and stores all the dependencies you need in your local repo, so you don't need internet access (apart from the first time you access the dependency
+
+## More definitions
+
+- *Spring Beans*
+    - In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called beans.
 
 
-- dependencies are the technologies/software you work with in your project
+## What is **MVC**?
 
-- maven downloads and stores all the dependencies you need in your local repo, so you don't need internet access (apart from the first time you access the dependency)
+- `View`: displays information to user
+- `Controller`: receives request from user, processes the request, gets data from Model, and updates the View
+- `Model`: communicates with db
 
 
-- API endpoint: the server side that provides the requested resource
+## What's so good about Spring framework?
+
+- Dependency Injection 
+  - Typically, objects control the instantiation and location of its dependencies by calling constructor methods
+  - With the IoC principle, objects define their dependencies without creating them. The IoC container then injects those dependencies when it creates them
+  - What's the advantage? Less coupling
+
+
+## Spring Boot MVC: how it works
+
+- Controller: handles HTTP requests (returns JSON response)
+- Service: performs business logic (including parsing of requests and error handling)
+- Repository: interacts with db
+
+
+# How does Service class handle errors?
+
+- Create a custom exception class, e.g. `ApiRequestException` that handles exceptions when client makes a HTTP request. This exception is thrown when the query on the db fails
+  - `ApiRequestException` extends `RuntimeException`
+- Create a general custom exception class, e.g. `ApiException` that defines the fields you want the client to see when the JSON error response is returned. This `ApiException` is wrapped in a `ResponseEntity`, to be returned to client 
+
 
 ## Spring Annotations
 
@@ -47,14 +75,25 @@
 
 - `@Repository`
   - Annotates a data-access class. Interacts directly with database
+  - Every entity needs its own `@Repository` class, which extends `JpaRepository`
 
 
 - `@Controller`
-  - Annotates an API-layer class. Receives HTTP requests and returns reponses
+  - Annotates an API-layer class. Receives HTTP requests and returns responses
+
+
+- `@ControllerAdvice`
+  - Annotates a class that handles ALL exceptions thrown
+
+
+- `@ExceptionHandler`
+  - Annotates a method in a `@ControllerAdvice` class. Each method can handle 1 or more different types of exceptions thrown
+  - e.g. `@ExceptionHandler(value = {MethodArgumentNotValidException .class})`
 
 
 - `@Autowired`
   - Can be annotated on a constructor, field, or a setter method. Tells Spring to wire up the dependency for you. Spring finds a bean of that data type, and injects it for you. If there are multiple, then have to use more specific annotations
+  - **ONLY** needed if your class has multiple constructors. If there is only 1, Spring already knows to inject the dependency for you
 
 
 - `@Value`
@@ -64,8 +103,12 @@
   - Only works for a class with `@Component` annotation
 
 
+- `@Valid` or `@Validated`
+  - Annotates a function parameter. Spring checks that the constraints set on the fields of the validated object is valid
+  - If the checks fail, then you can capture that exception and tell the client what fields failed the validation
+
 - `@Bean`
-  - Annotates a method. Whatever the method returns, make it a bean
+  - Annotates a factory method (a method that returns an object). This method now instantiaties a Bean
 
 
 - `@RequestMapping`
@@ -81,20 +124,39 @@
 - `@SpringBootApplication`
   - Initializes all beans, `@Configuration` files, etc upon launching the application. Is the gateway to running your app
 
-## More definitions
 
-- *Spring Beans*
-  - In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called beans. A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container.
+## Spring Annotations #2
 
-  - Inversion of Control (IoC) is a process in which an object defines its dependencies without creating them. This object delegates the job of constructing such dependencies to an IoC container.
+- `@Nullable`
+  - Annotation to indicate that a specific parameter, return value, or field can be null.
 
 
-- difference between POST and PUT http requests
-  - POST is used to create a resource
-    - POST updates a resource, adds a subsidiary resource, or causes a change. A POST is not idempotent, in the way that x++ is not idempotent
+- `@NonNull`
+  - Annotation to indicate that a specific parameter, return value, or field cannot be null (not needed on parameters, return values, and fields where @NonNullApi and @NonNullFields apply, respectively)
+
+
+- `@NonNullApi`
+  - Annotation at the package level that declares non-null as the default semantics for **parameters** and **return values**.
+
+
+- `@NonNullFields`
+  - Annotation at the package level that declares non-null as the default semantics for **fields**
+
+
+## Data Transfer Objects (DTOs)
+- Used for PUT requests. Spring analyses the JSON request and maps it to the DTO. Fields can be extracted from the DTO and used to update the db
+- Does not have constructors
+
+
+
+## Difference between **POST** and **PUT** http requests
+- POST is used to create a resource
+  - POST updates a resource, adds a subsidiary resource, or causes a change. A POST is not idempotent, in the way that x++ is not idempotent
 use this when you need the server to be in control of URL generation of your resources, e.g. asking server to create a user
-  - PUT is used to insert, or replace if already exists, a resource
-    - PUT implies putting a resource - creating or completely replacing whatever is available at the given URL with a different thing. By definition, a PUT is idempotent. PUT replaces the resource at the known url if it already exists, so sending the same request twice has no effect.
+
+
+- PUT is used to insert, or replace if already exists, a resource
+  - PUT implies putting a resource - creating or completely replacing whatever is available at the given URL with a different thing. By definition, a PUT is idempotent. PUT replaces the resource at the known url if it already exists, so sending the same request twice has no effect.
 however, idempotent property is assumed. You have to implement this property correctly in the server
 use PUT when you know the URL of thing you will create, e.g. updating a specific user
 
